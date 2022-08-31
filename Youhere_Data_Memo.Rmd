@@ -1,0 +1,58 @@
+---
+title: "Final Project Data Memo"
+subtitle: "Data Science 3 with R (STAT 301-3)"
+author: "Sia Cho, Sammy Mustafa, and Chloe Sokol"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    highlight: "tango"
+    code_folding: "show"
+---
+
+```{r global-settings, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r}
+library(tidyverse)
+library(skimr)
+```
+
+```{r}
+cancer <- read_csv("data/cancer_reg.csv")
+skim_without_charts(cancer)
+```
+
+
+## Proposed Timeline
+<br>
+The dataset is already loaded into R, as seen above in the skim. We will start analysis soon, but gradually, with a thorough EDA before we attempt to make any recipies or choose/fit any models.
+
+## Overview of Dataset
+<br>
+This dataset documents information on cancer death rates for every county in the United States. The dataset was found on Data World, uploaded by Noah Rippner as a challenge to predict the outcome variable, `TARGET_deathRate` (mean per capita (100,000) cancer mortalities). The link to his project page is here: https://data.world/nrippner/ols-regression-challenge. In his description he cites contributions of his aggregated data set from the American Community Survey (census.gov), clinicaltrials.gov, and cancer.gov. The dataset was downloaded from Data World as a csv file and uploaded to this Rmd file as seen above. 
+<br><br>
+The dataset holds 3047 observations, spread over 34 variables. The skim performed above shows us that there are 2 character variables, `binnedInc` (Median income per capita binned by decile) and `Geography` (County name). The other 32 variables are all numeric: `TARGET_deathRate` (the outcome variable), `avgAnnCount`, `avgDeathsPerYear`, `incidenceRate`, `medianIncome`, `popEst2015`, `povertyPercent`, `studyPerCap`, `MedianAge`, `MedianAgeMale`, `MedianAgeFemale`, `AvgHouseholdSize`, `PercentMarried`, `PctNoHS18_24`, `PctHS18_24`, `PctSomeCol18_24`, `PctBachDeg18_24`, `PctHS25_Over`, `PctBachDeg25_Over`, `PctEmployed16_Over`, `PctUnemployed16_Over`, `PctPrivateCoverage`, `PctPrivateCoverageAlone`, `PctEmpPrivCoverage`, `PctPublicCoverage` `PctPubliceCoverageAlone`, `PctWhite`, `PctBlack`, `PctAsian`, `PctOtherRace`, `PctMarriedHouseholds`, and `BirthRate`. The codebook with definitions of each of these variables can be found in the README file within the data folder. 
+<br><br>
+Of the 34 variables, only 3 display missingness: `PctSomeCol18_24`, `PctEmployed16_Over`, and `PctPrivateCoverageAlone`. `PctSomeCol18_24` is missing 2285 observations, yielding about 75% missing observations. Alternatively, `PctEmployed16_Over` is missing only 152 observations, yielding about 5% missing observations. Lastly, `PctPrivateCoverageAlone` is missing 609 observations, yielding about 20% missing observations. 
+
+
+## Potential Research Questions 
+<br>
+The main potential predictive research question for this dataset is "Can we accurately predict the outcome variable, `TARGET_deathRate` (mean per capita (100,000) cancer mortalities), with modeling? This will be a regression-based approach because we are predicting a value, as opposed to a character label. The response variable is clearly `TARGET_deathRate` and an EDA of the dataset, most likely including a correlation plot, would show which other variable in the dataset would be useful in modeling the response based on evidence of a strong relationship with the outcome variable. Variable that are currently suspected to have a strong relationship with the outcome variable include `avgAnnCount` (mean number of reported cases of cancer diagnosed annually), `avgDeathsPerYear` (mean number of reported mortalities due to cancer), and `incidenceRate` (mean per capita (100,000) cancer diagoses).
+<br><br>
+A natural question that comes up as a result of this initial research question is "which model will create the best prediction?" This would be determined through the comparison of different models' RMSE (root me square error) value as well as potentially an R^2 value. 
+
+
+## Potential Difficulties
+<br>
+There will need to be some decisions made about the dataset uploaded to this file. `PctSomeCol18_24` has 75% missing data and should not be considered for use in modeling. Alternatively, `PctEmployed16_Over` is only missing 5% of its observations and will be ok to use. It is unclear whether `PctPrivateCoverageAlone` with 20% missing data should be included. We are planning on utilizing the `step_impute_linear` function in our recipe to try and predict the missing data.
+<br><br>
+Another issue with the dataset is one of the two character variables, `binnedInc`, which holds information on median income per capita binned by decile. Although the actual data in this category is held in numbers, it is a set of two numbers for the edge values of the decile range. As a result, the set, encased in brackets, is read as a character variable instead of a numeric one. A potential solution for this problem is to split thus variable into two new ones: one with the lower end value fo the decile and one with the upper end value. 
+
+
+## Github Repo Link
+[https://github.com/STAT301III/final-project-youhere.git](https://github.com/STAT301III/final-project-youhere.git){target="_blank"}
