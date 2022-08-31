@@ -1,1 +1,1 @@
-# Regression-Modeling-Project
+STAT 301-3 final project (completed in R): regression modeling mean cancer mortality rate per capita from an aggregated data set of the American Community Survey (census.gov), clinicaltrials.gov, and cancer.gov uploaded to Kaggle by Noah Rippner (https://data.world/nrippner/ols-regression-challenge)
